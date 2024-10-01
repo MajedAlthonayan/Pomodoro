@@ -1,6 +1,9 @@
 # Flexible Pomodoro Timer
 import time 
+from pynput import mouse, keyboard
+
 def main():
+    test()
     exit = False
     totalWork = 0 
     while exit == False:
@@ -10,13 +13,31 @@ def main():
         choice = input("Enter your choice: ")
         if choice == "1":
             totalWork += start_work()
-            
             mins, secs = divmod(int(totalWork), 60) 
             timer = '{:02d}:{:02d}'.format(mins, secs) 
             print("Work Done so far ", timer, "!")
         if choice == "2":
             exit = True
 
+def test():
+    # with keyboard.Listener(
+    #         on_press=on_press) as listener:
+    #     listener.join()
+
+    # ...or, in a non-blocking fashion:
+    listener = keyboard.Listener(
+        on_press=on_press)
+    listener.start()
+
+def on_press(key):
+    try:
+        if key.char == 'q':
+            print("q!!!")
+            return False
+        else:
+            return True
+    except AttributeError:
+        pass
 
 def start_work():
     exit = False
@@ -31,24 +52,30 @@ def start_work():
     print("Work Started!!\n\n\n")
 
     start = time.time()
+    work = True
     while exit == False:
-        quit = input("Press q to stop working!\n\n")
-        if quit == "q":
-            end = time.time()
-            mins, secs = divmod(int(end-start), 60) 
-            timer = '{:02d}:{:02d}'.format(mins, secs) 
-            print("Time worked of ", timer, "!")
-            takeBreak = input("Take a break? (y/n): ")
-            if takeBreak == "y":
-                start_break(end - start)
-                exit = True
-    return ((end - start))
+        currentLength = 0
+        while work == True:
+            with keyboard.Events() as events: 
+                mins, secs = divmod(currentLength, 60) 
+                timer = '{:02d}:{:02d}'.format(mins, secs) 
+                print(timer, end="\r") 
+                time.sleep(1) 
+                currentLength += 1
+                for event in events:
+                    if event.key == keyboard.Key.esc:
+                        work = False
+                        print("workkkkk")
+                    break
 
-            
+
+        takeBreak = input("Take a break? (y/n): ")
+        if takeBreak == "y":
+            start_break(currentLength)
+        exit = True
+    return(currentLength)
 
 
-def stop_work():
-    print("TODO")
 
 def start_break(workDone):
     breakLength = int(0.1 * workDone)
@@ -72,7 +99,5 @@ def start_break(workDone):
         time.sleep(1) 
         breakLength -= 1
 
-def reset():
-    print("TODO")
 
 main()
