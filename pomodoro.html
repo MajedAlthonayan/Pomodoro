@@ -16,18 +16,24 @@
 		<h1>Hocus Focus</h1>
 
 		<h4>Work Timer</h4>
-		<div id="stopwatch">00:00:00</div>
+		<!-- Unique ID for work timer -->
+		<div id="workStopwatch">00:00:00</div>
 
 		<h4>Break Timer</h4>
-		<div id="stopwatch">00:00:00</div>
-		<br />
+		<!-- Unique ID for break timer -->
+		<div id="breakStopwatch">00:00:00</div>
 
-		<button id="start">Start</button>
-		<button id="stop">Stop</button>
+		<h4>Cumulative Work Time</h4>
+		<!-- Display for cumulative work time -->
+		<div id="cumulativeWork">00:00:00</div>
+
+		<br />
+		<button id="start">Start Work Timer</button>
+		<button id="stop">Stop Work Timer</button>
 		<br />
 		<br />
-		<button id="reset">Reset</button>
-		<button id="break">Break</button>
+		<button id="reset">Reset Work Timer</button>
+		<button id="break">Start Break Timer</button>
 
 		<script src="timer.js"></script>
 	</body>
